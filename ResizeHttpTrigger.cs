@@ -20,8 +20,11 @@ namespace Company.Function
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-            int w = 0; // TODO récupérer le paramètre w
-            int h = 0; // TODO récupérer le paramètre h
+            if (!int.TryParse(req.Query["w"], out int w) ||
+                !int.TryParse(req.Query["h"], out int h))
+            {
+                return new BadRequestObjectResult("Invalid w or h");
+            }
 
             byte[]  targetImageBytes;
             using(var  msInput = new MemoryStream())
@@ -47,6 +50,7 @@ namespace Company.Function
             // Renvoie le contenu avec le content-type correspondant à une image jpeg
             // TODO renvoyer les octets de l'image
             // TODO ... ainsi que le content-type correspondant à une image Jpeg
-            return new FileContentResult(null, "");        }
+            return new FileContentResult(targetImageBytes, "image/jpeg");
+        }
     }
 }
