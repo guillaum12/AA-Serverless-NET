@@ -1,5 +1,4 @@
 
-
 public class Personne
 {
     // Généré avec "prop" + TAB + TAB
